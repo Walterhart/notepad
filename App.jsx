@@ -9,10 +9,12 @@ import { notesCollection, db } from "./database/firebase";
 export default function App() {
   const [notes, setNotes] = React.useState([]);
 
-  const [currentNoteId, setCurrentNoteId] = React.useState(notes[0]?.id || "");
+  const [currentNoteId, setCurrentNoteId] = React.useState("");
 
   const currentNote =
     notes.find((note) => note.id === currentNoteId) || notes[0];
+
+ 
 
   React.useEffect(() => {
     const unsubscribe = onSnapshot(notesCollection, function (snapshot) {
@@ -45,9 +47,9 @@ export default function App() {
   }
 
   async function deleteNote(noteId) {
-    const docRef = doc(db, "notes", noteId)
-    await deleteDoc(docRef)
-}
+    const docRef = doc(db, "notes", noteId);
+    await deleteDoc(docRef);
+  }
 
   return (
     <main>
@@ -60,9 +62,7 @@ export default function App() {
             newNote={createNewNote}
             deleteNote={deleteNote}
           />
-          {
-            <Editor currentNote={currentNote} updateNote={updateNote} />
-          }
+          {<Editor currentNote={currentNote} updateNote={updateNote} />}
         </Split>
       ) : (
         <div className="no-notes">
